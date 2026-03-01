@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Nhà thuốc An Tâm</title>
+    <meta
+      name="description"
+      content="Nhà thuốc An Tâm là website nhà thuốc trực tuyến giúp khách hàng tra cứu thuốc, nhận tư vấn an toàn và mua sắm thuận tiện tại nhà."
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-loader" id="page-loader" aria-hidden="true">
+      <div class="loader">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+    </div>
+    <div class="page-shell">
+      <div class="ambient ambient-a"></div>
+      <div class="ambient ambient-b"></div>
+      <div class="ambient ambient-c"></div>
+
+      <header class="site-header reveal">
+        <div class="topbar">
+          <div class="container topbar-inner">
+            <p>Hotline tư vấn dược sĩ: <strong>1800 6821</strong></p>
+            <div class="topbar-links">
+              <a href="#drug-finder">Tra cứu thuốc</a>
+              <a href="#advisor">Tư vấn theo bệnh</a>
+              <a href="cart.html">Giỏ hàng</a>
+              <a href="profile.html">Tài khoản</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="nav-wrap container">
+          <a class="brand" href="#">
+            <span class="brand-mark">
+              <img class="brand-logo" src="Logo/LOGO.png" alt="Nhà thuốc An Tâm" />
+            </span>
+            <span class="brand-copy">
+              <strong>Nhà thuốc An Tâm</strong>
+              <small>Chăm sóc sức khỏe mỗi ngày</small>
+            </span>
+          </a>
+
+          <button class="catalog-trigger" type="button" aria-expanded="false" aria-controls="catalog-stage">
+            <span class="catalog-trigger-inner">
+              <span class="material-symbols-outlined trigger-icon">apps</span>
+              <span>Danh mục</span>
+              <span class="material-symbols-outlined trigger-arrow">expand_more</span>
+            </span>
+          </button>
+
+          <label class="hero-search" for="global-search">
+            <span>Tìm thuốc, hoạt chất, bệnh, triệu chứng...</span>
+            <div class="search-input-wrap">
+              <span class="material-symbols-outlined search-input-icon">search</span>
+              <input
+                id="global-search"
+                type="search"
+                placeholder="Ví dụ: paracetamol, dị ứng, đau họng"
+                autocomplete="off"
+              />
+            </div>
+            <div class="search-suggestions" id="global-search-suggestions" hidden></div>
+          </label>
+
+          <div class="nav-actions">
+            <div class="header-pocket">
+              <button
+                class="nav-icon-button"
+                type="button"
+                id="notice-trigger"
+                aria-label="Mở thông báo"
+                aria-expanded="false"
+                aria-controls="notice-popover"
+              >
+                <span class="material-symbols-outlined">notifications</span>
+                <em class="nav-badge is-hidden" id="notice-count">0</em>
+              </button>
+              <div class="header-popover notice-popover" id="notice-popover" aria-hidden="true">
+                <article class="notice-popover-card">
+                  <div class="notice-popover-head">
+                    <strong>Thông báo mới</strong>
+                  </div>
+                  <div class="notice-popover-body" id="notice-list"></div>
+                </article>
+              </div>
+            </div>
+            <div class="header-pocket">
+              <button
+                class="nav-icon-button"
+                type="button"
+                id="cart-trigger"
+                aria-label="Mở giỏ hàng"
+                aria-expanded="false"
+                aria-controls="cart-popover"
+              >
+                <span class="material-symbols-outlined">shopping_cart</span>
+                <em class="nav-badge is-hidden" id="cart-count">0</em>
+              </button>
+              <div class="header-popover cart-popover" id="cart-popover" aria-hidden="true">
+                <article class="cart-popover-card">
+                  <div class="cart-popover-head">
+                    <strong>Giỏ hàng</strong>
+                    <span id="cart-context">Giỏ hàng của bạn đang trống</span>
+                  </div>
+                  <div class="cart-popover-body">
+                    <div class="cart-panel" id="cart-panel"></div>
+                  </div>
+                </article>
+              </div>
+            </div>
+            <button class="account-trigger" type="button" id="account-trigger">
+              <span class="account-avatar material-symbols-outlined">account_circle</span>
+              <span class="account-copy">
+                <small>Xin chào</small>
+                <strong id="account-greeting">Đăng nhập</strong>
+              </span>
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="catalog-dropdown" id="catalog-stage" aria-hidden="true">
+          <div class="container">
+            <div class="mega-catalog glass-card">
+              <aside class="mega-sidebar" id="mega-category-menu"></aside>
+              <div class="mega-main">
+                <div class="mega-head" id="mega-category-head"></div>
+                <div class="mega-tiles" id="mega-category-tiles"></div>
+              </div>
+              <aside class="mega-promo" id="mega-category-promo"></aside>
+            </div>
+          </div>
+        </section>
+
+        <section class="hero container reveal">
+          <div class="hero-copy">
+            <div class="eyebrow">Nhà thuốc trực tuyến tiện lợi</div>
+            <h1>Tìm thuốc nhanh, dễ hiểu và dễ chọn mua.</h1>
+            <p class="hero-summary">Tra cứu nhanh, xem gợi ý rõ và thêm vào giỏ hàng ngay.</p>
+
+            <div class="hero-cta">
+              <a class="primary-action" href="#drug-finder">Mua sắm ngay</a>
+              <a class="secondary-action" href="cart.html">Xem giỏ hàng</a>
+            </div>
+
+            <div class="hero-chips" id="search-chips"></div>
+          </div>
+
+          <div class="hero-visual">
+            <div class="hero-card glass-card">
+              <div class="hero-card-head">
+                <span class="status-dot"></span>
+                <strong>Tư vấn nhanh cho khách hàng</strong>
+              </div>
+              <div class="hero-card-body">
+                <div class="signal-ring">
+                  <div class="signal-ring-inner"></div>
+                </div>
+                <div class="hero-stats">
+                  <article>
+                    <strong data-counter="25">0</strong>
+                    <span>sản phẩm nổi bật</span>
+                  </article>
+                  <article>
+                    <strong data-counter="7">0</strong>
+                    <span>nhóm nhu cầu</span>
+                  </article>
+                  <article>
+                    <strong data-counter="4">0</strong>
+                    <span>ưu đãi trong ngày</span>
+                  </article>
+                </div>
+              </div>
+            </div>
+
+            <div class="floating-panel floating-panel-a glass-card">
+              <span>Khuyến nghị ưu tiên</span>
+              <strong>Sản phẩm thường dùng cho các triệu chứng phổ biến</strong>
+              <small>Dễ xem, dễ chọn và dễ thêm vào giỏ hàng</small>
+            </div>
+
+            <div class="floating-panel floating-panel-b glass-card">
+              <span>Mua sắm an tâm</span>
+              <strong>Cảnh báo an toàn • Gợi ý phù hợp • Giao hàng nhanh</strong>
+            </div>
+          </div>
+        </section>
+
+        <section class="service-strip container reveal">
+          <article class="service-card">
+            <span class="service-tag">01</span>
+            <h2>Tủ thuốc theo nhu cầu</h2>
+            <p>Tra tìm thuốc theo tên, hoạt chất hoặc nhóm bệnh.</p>
+          </article>
+          <article class="service-card">
+            <span class="service-tag">02</span>
+            <h2>Tư vấn theo bệnh</h2>
+            <p>Chọn bệnh phổ biến để xem thuốc gợi ý và cảnh báo.</p>
+          </article>
+          <article class="service-card">
+            <span class="service-tag">03</span>
+            <h2>Giải thích dễ hiểu</h2>
+            <p>Khi có thể tham khảo dùng và khi nào không nên tự dùng.</p>
+          </article>
+        </section>
+
+        <section class="inline-banner-section container reveal">
+          <div class="inline-banner-slider glass-card" data-slider-root="inline">
+            <div class="banner-track compact-track" id="inline-banner-track"></div>
+            <div class="banner-controls compact-controls">
+              <div class="banner-dots" id="inline-banner-dots"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="spotlight container reveal">
+          <div class="spotlight-banner">
+            <div class="spotlight-copy">
+              <span class="eyebrow">Mua sắm theo nhu cầu</span>
+              <h2>Tra cứu thuốc, xem cảnh báo an toàn và thêm vào giỏ hàng thật nhanh.</h2>
+              <p>
+                Từ một truy vấn như “đau họng” hoặc “dị ứng”, khách hàng có thể
+                xem ngay nhóm sản phẩm phù hợp, lưu ý quan trọng và quyết định
+                mua sắm thuận tiện hơn.
+              </p>
+            </div>
+
+            <div class="spotlight-grid">
+              <article class="mini-panel">
+                <span>Sản phẩm dễ chọn</span>
+                <strong>Thuốc, thực phẩm bổ sung, chăm sóc cá nhân, mẹ và bé</strong>
+              </article>
+              <article class="mini-panel">
+                <span>Trải nghiệm tiện lợi</span>
+                <strong>Tìm nhanh, xem rõ, mua ngay</strong>
+              </article>
+              <article class="mini-panel">
+                <span>Dành cho khách hàng</span>
+                <strong>Giỏ hàng riêng, thông báo, tài khoản và lịch sử đơn hàng</strong>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="catalog-section container reveal" id="drug-finder">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Danh mục sản phẩm</span>
+              <h2>Tra tìm thuốc theo tên, hoạt chất hoặc nhóm bệnh</h2>
+            </div>
+            <p>Tìm đúng thuốc nhanh hơn.</p>
+          </div>
+
+          <div class="filter-bar glass-card">
+            <div class="search-stack">
+              <label for="catalog-search">Tìm trong danh mục</label>
+              <div class="search-input-wrap">
+                <span class="material-symbols-outlined search-input-icon">search</span>
+                <input
+                  id="catalog-search"
+                  type="search"
+                  placeholder="Nhập tên thuốc, hoạt chất, triệu chứng..."
+                  autocomplete="off"
+                />
+              </div>
+              <div class="search-suggestions" id="catalog-search-suggestions" hidden></div>
+            </div>
+            <div class="pill-row" id="category-pills"></div>
+          </div>
+
+          <div class="catalog-layout">
+            <section class="medicine-grid" id="medicine-grid"></section>
+            <aside class="detail-panel glass-card" id="medicine-detail"></aside>
+          </div>
+        </section>
+
+        <section class="advisor-section container reveal" id="advisor">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Tư vấn tham khảo</span>
+              <h2>Chọn bệnh phổ biến để xem thuốc gợi ý và cảnh báo</h2>
+            </div>
+            <p>Xem nhanh thuốc phù hợp và điều cần lưu ý.</p>
+          </div>
+
+          <div class="advisor-layout">
+            <div class="disease-rail glass-card" id="disease-rail"></div>
+            <div class="advisor-result">
+              <div class="advisor-overview glass-card" id="advisor-overview"></div>
+              <div class="advisor-meds" id="advisor-meds"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="scenario-section container reveal" id="scenario-checker">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Tình huống giả định</span>
+              <h2>Giải thích cho bệnh nhân khi nào có thể tham khảo dùng và khi nào không nên tự dùng</h2>
+            </div>
+            <p>Nhập tình huống để xem nên dùng hay cần hỏi thêm.</p>
+          </div>
+
+          <div class="scenario-layout">
+            <aside class="scenario-chat glass-card">
+              <div class="scenario-chat-head">
+                <span class="eyebrow">Mẫu hội thoại</span>
+                <h3>Các tình huống bệnh nhân hay nhập</h3>
+              </div>
+              <div class="scenario-example-list" id="scenario-examples"></div>
+            </aside>
+
+            <div class="scenario-workbench">
+              <div class="scenario-form glass-card">
+                <label class="scenario-label" for="scenario-input">Nhập tình huống</label>
+                <textarea
+                  id="scenario-input"
+                  rows="4"
+                  placeholder="Ví dụ: Tôi tự lên đơn thuốc mà thuốc này cần kê toa. Hoặc: Tôi uống Panadol kết hợp với Alexan có được không?"
+                ></textarea>
+
+                <div class="scenario-flags-head">
+                  <span class="scenario-label">Cờ nguy cơ của bệnh nhân</span>
+                  <small>Chọn nếu tình huống có kèm các yếu tố này.</small>
+                </div>
+                <div class="scenario-flag-grid" id="scenario-flags"></div>
+
+                <div class="scenario-actions">
+                  <button class="primary-action" type="button" id="scenario-analyze">
+                    Phân tích tình huống
+                  </button>
+                  <button class="ghost-action" type="button" id="scenario-clear">
+                    Xóa nhanh
+                  </button>
+                </div>
+              </div>
+
+              <div class="scenario-result glass-card" id="scenario-result"></div>
+            </div>
+          </div>
+        </section>
+
+      </main>
+
+      <div class="floating-widget" aria-label="Tiện ích nhanh">
+        <button class="floating-widget-button chat" type="button" id="floating-chat-trigger" aria-label="Mở tư vấn nhanh">
+          <span class="material-symbols-outlined">support_agent</span>
+        </button>
+        <button class="floating-widget-button top" type="button" id="floating-top-trigger" aria-label="Lên đầu trang">
+          <span class="material-symbols-outlined">expand_less</span>
+        </button>
+      </div>
+
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <div>
+            <strong>Nhà thuốc An Tâm</strong>
+            <p>
+              Website hỗ trợ khách hàng tra cứu sản phẩm, tham khảo lưu ý an
+              toàn và mua sắm nhanh tại nhà.
+            </p>
+          </div>
+          <p>
+            Lưu ý: thông tin trên trang mang tính tham khảo, không thay thế chỉ
+            định chuyên môn của bác sĩ.
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="site-state.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>

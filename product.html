@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chi tiết thuốc | Nhà thuốc An Tâm</title>
+    <meta
+      name="description"
+      content="Trang chi tiết thuốc của Nhà thuốc An Tâm giúp khách hàng xem ảnh sản phẩm, thông tin, lưu ý an toàn và thêm nhanh vào giỏ hàng."
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="page-loader" id="page-loader" aria-hidden="true">
+      <div class="loader">
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+      </div>
+    </div>
+    <div class="page-shell">
+      <div class="ambient ambient-a"></div>
+      <div class="ambient ambient-b"></div>
+      <div class="ambient ambient-c"></div>
+
+      <header class="site-header">
+        <div class="topbar">
+          <div class="container topbar-inner">
+            <p>Hotline tư vấn dược sĩ: <strong>1800 6821</strong></p>
+            <div class="topbar-links">
+              <a href="index.html#drug-finder">Tra cứu thuốc</a>
+              <a href="index.html#advisor">Tư vấn theo bệnh</a>
+              <a href="cart.html">Giỏ hàng</a>
+              <a href="profile.html">Tài khoản</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="container profile-page-nav">
+          <a class="brand" href="index.html">
+            <span class="brand-mark">
+              <img class="brand-logo" src="Logo/LOGO.png" alt="Nhà thuốc An Tâm" />
+            </span>
+            <span class="brand-copy">
+              <strong>Nhà thuốc An Tâm</strong>
+              <small>Chăm sóc sức khỏe mỗi ngày</small>
+            </span>
+          </a>
+
+          <nav class="profile-page-links" aria-label="Điều hướng trang chi tiết thuốc">
+            <a href="index.html">Trang chủ</a>
+            <a href="index.html#drug-finder">Danh sách thuốc</a>
+            <a href="cart.html">Giỏ hàng</a>
+          </nav>
+
+          <div class="profile-page-actions">
+            <a class="secondary-action" href="index.html#drug-finder">Quay lại danh sách</a>
+            <div class="profile-page-account">
+              <span class="account-avatar material-symbols-outlined">account_circle</span>
+              <span class="account-copy">
+                <small>Xin chào</small>
+                <strong id="product-account-name">Khách hàng</strong>
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="product-page-main">
+        <div class="container product-breadcrumbs" id="product-breadcrumbs"></div>
+
+        <section class="container product-page-shell glass-card" id="product-shell">
+          <div class="product-gallery-column" id="product-gallery"></div>
+          <div class="product-summary-column" id="product-summary"></div>
+        </section>
+
+        <section class="container product-extra-grid">
+          <article class="product-info-card glass-card" id="product-specs"></article>
+          <article class="product-info-card glass-card" id="product-guidance"></article>
+        </section>
+      </main>
+
+      <div class="floating-widget" aria-label="Tiện ích nhanh">
+        <button class="floating-widget-button chat" type="button" id="floating-chat-trigger" aria-label="Mở tư vấn nhanh">
+          <span class="material-symbols-outlined">support_agent</span>
+        </button>
+        <button class="floating-widget-button top" type="button" id="floating-top-trigger" aria-label="Lên đầu trang">
+          <span class="material-symbols-outlined">expand_less</span>
+        </button>
+      </div>
+
+      <footer class="site-footer">
+        <div class="container footer-inner">
+          <div>
+            <strong>Nhà thuốc An Tâm</strong>
+            <p>
+              Website hỗ trợ khách hàng tra cứu sản phẩm, tham khảo lưu ý an
+              toàn và mua sắm nhanh tại nhà.
+            </p>
+          </div>
+          <p>
+            Lưu ý: thông tin trên trang mang tính tham khảo, không thay thế chỉ
+            định chuyên môn của bác sĩ.
+          </p>
+        </div>
+      </footer>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="site-state.js"></script>
+    <script src="product.js"></script>
+  </body>
+</html>
