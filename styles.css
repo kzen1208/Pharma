@@ -113,7 +113,7 @@ textarea {
 
 .page-shell {
   position: relative;
-  overflow-x: visible;
+  overflow-x: clip;
   overflow-y: visible;
 }
 
@@ -5565,6 +5565,15 @@ textarea {
 }
 
 @media (max-width: 760px) {
+  html,
+  body,
+  .page-shell,
+  .site-header,
+  main,
+  .site-footer {
+    overflow-x: clip;
+  }
+
   .home-page .topbar,
   .home-page .hero,
   .home-page .service-strip,
@@ -6016,6 +6025,15 @@ textarea {
 }
 
 @media (max-width: 560px) {
+  html,
+  body,
+  .page-shell,
+  .site-header,
+  main,
+  .site-footer {
+    overflow-x: clip;
+  }
+
   .home-page .nav-wrap {
     grid-template-columns: 4.25rem minmax(0, 1fr) auto;
     gap: 0.7rem;
