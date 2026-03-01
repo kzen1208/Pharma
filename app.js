@@ -34,6 +34,12 @@ const scenarioInput = document.getElementById("scenario-input");
 const scenarioAnalyze = document.getElementById("scenario-analyze");
 const scenarioClear = document.getElementById("scenario-clear");
 const scenarioResult = document.getElementById("scenario-result");
+const prescriptionImageInput = document.getElementById("prescription-image");
+const prescriptionPreview = document.getElementById("prescription-preview");
+const prescriptionPreviewImage = document.getElementById("prescription-preview-image");
+const prescriptionStatus = document.getElementById("prescription-status");
+const prescriptionScan = document.getElementById("prescription-scan");
+const prescriptionReset = document.getElementById("prescription-reset");
 const cartPanel = document.getElementById("cart-panel");
 const cartContext = document.getElementById("cart-context");
 const noticeList = document.getElementById("notice-list");
@@ -56,6 +62,9 @@ const globalSearch = document.getElementById("global-search");
 const globalSearchSuggestions = document.getElementById("global-search-suggestions");
 const catalogSearchSuggestions = document.getElementById("catalog-search-suggestions");
 const searchChips = document.getElementById("search-chips");
+const mobileTrendLinks = document.getElementById("mobile-trend-links");
+const mobilePromoGrid = document.getElementById("mobile-promo-grid");
+const mobileCategoryRail = document.getElementById("mobile-category-rail");
 const heroBannerTrack = document.getElementById("hero-banner-track");
 const heroBannerDots = document.getElementById("hero-banner-dots");
 const inlineBannerTrack = document.getElementById("inline-banner-track");
@@ -64,6 +73,13 @@ const catalogTrigger = document.querySelector(".catalog-trigger");
 const catalogDropdown = document.getElementById("catalog-stage");
 
 const sliderState = {};
+const prescriptionState = {
+  file: null,
+  previewUrl: "",
+  extractedText: "",
+  rawText: "",
+  isScanning: false
+};
 const riskOrder = {
   safe: 0,
   caution: 1,
@@ -151,6 +167,15 @@ function slugify(text) {
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase();
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 function lowerFirst(text) {
@@ -1088,6 +1113,25 @@ function detectScenarioSymptoms(normalized) {
   return [...new Set(matched)];
 }
 
+function inferDiseasesFromMedicines(medicines) {
+  const diseaseScore = new Map();
+
+  medicines.forEach((medicine) => {
+    medicine.diseaseIds.forEach((diseaseId) => {
+      diseaseScore.set(diseaseId, (diseaseScore.get(diseaseId) ?? 0) + 1);
+    });
+  });
+
+  return [...diseaseScore.entries()]
+    .map(([diseaseId, score]) => {
+      const disease = findDiseaseById(diseaseId);
+      return disease ? { ...disease, score } : null;
+    })
+    .filter(Boolean)
+    .sort((left, right) => right.score - left.score)
+    .slice(0, 3);
+}
+
 function inferScenarioDiseases(normalized, symptoms) {
   return DISEASES.map((disease) => {
     let score = 0;
@@ -1154,6 +1198,7 @@ function detectScenarioContext(text, chosenFlags) {
   const { medicines, externalProducts } = detectMedicineMentions(normalized);
   const symptoms = detectScenarioSymptoms(normalized);
   const diseases = inferScenarioDiseases(normalized, symptoms);
+  const inferredDiseases = diseases.length ? diseases : inferDiseasesFromMedicines(medicines);
 
   const inferredFlags = PATIENT_FLAGS.filter((flag) =>
     flag.keywords.some((keyword) => normalized.includes(slugify(keyword)))
@@ -1186,7 +1231,7 @@ function detectScenarioContext(text, chosenFlags) {
     text,
     medicines,
     externalProducts,
-    diseases,
+    diseases: inferredDiseases,
     symptoms,
     flags,
     intents,
@@ -1195,6 +1240,162 @@ function detectScenarioContext(text, chosenFlags) {
     mentionsCombination,
     normalized
   };
+}
+
+function setPrescriptionStatus(kind, message) {
+  if (!prescriptionStatus) return;
+
+  prescriptionStatus.className = `scenario-upload-status ${kind}`;
+  prescriptionStatus.textContent = message;
+}
+
+function updatePrescriptionControls() {
+  if (prescriptionScan) {
+    prescriptionScan.disabled = !prescriptionState.file || prescriptionState.isScanning;
+    prescriptionScan.textContent = prescriptionState.isScanning ? "Đang quét..." : "Quét đơn thuốc";
+  }
+
+  if (prescriptionReset) {
+    prescriptionReset.disabled =
+      (!prescriptionState.file && !prescriptionState.extractedText) || prescriptionState.isScanning;
+  }
+}
+
+function resetPrescriptionState({ keepInput = false, keepStatus = false } = {}) {
+  if (prescriptionState.previewUrl) {
+    URL.revokeObjectURL(prescriptionState.previewUrl);
+  }
+
+  prescriptionState.file = null;
+  prescriptionState.previewUrl = "";
+  prescriptionState.extractedText = "";
+  prescriptionState.rawText = "";
+  prescriptionState.isScanning = false;
+
+  if (prescriptionImageInput) {
+    prescriptionImageInput.value = "";
+  }
+
+  if (prescriptionPreviewImage) {
+    prescriptionPreviewImage.removeAttribute("src");
+  }
+
+  if (prescriptionPreview) {
+    prescriptionPreview.hidden = true;
+  }
+
+  if (!keepInput && scenarioInput) {
+    scenarioInput.value = "";
+  }
+
+  if (!keepStatus) {
+    setPrescriptionStatus("info", "Tải ảnh đơn thuốc để quét nội dung và hỗ trợ giải thích an toàn.");
+  }
+
+  updatePrescriptionControls();
+}
+
+function setPrescriptionFile(file) {
+  if (!file) {
+    resetPrescriptionState({ keepInput: true });
+    return;
+  }
+
+  if (!file.type.startsWith("image/")) {
+    setPrescriptionStatus("error", "Vui lòng chọn đúng file ảnh đơn thuốc.");
+    return;
+  }
+
+  if (prescriptionState.previewUrl) {
+    URL.revokeObjectURL(prescriptionState.previewUrl);
+  }
+
+  prescriptionState.file = file;
+  prescriptionState.extractedText = "";
+  prescriptionState.rawText = "";
+  prescriptionState.previewUrl = URL.createObjectURL(file);
+
+  if (prescriptionPreviewImage) {
+    prescriptionPreviewImage.src = prescriptionState.previewUrl;
+  }
+
+  if (prescriptionPreview) {
+    prescriptionPreview.hidden = false;
+  }
+
+  setPrescriptionStatus("info", "Ảnh đã sẵn sàng. Bấm quét để đọc nội dung đơn thuốc.");
+  updatePrescriptionControls();
+}
+
+function cleanOcrText(text) {
+  return text
+    .replace(/\r/g, "\n")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n{3,}/g, "\n\n")
+    .split("\n")
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .join("\n");
+}
+
+function loggerMessage(message) {
+  const progress =
+    typeof message.progress === "number" ? ` ${Math.round(message.progress * 100)}%` : "";
+  const statusMap = {
+    loading: "Đang tải OCR...",
+    initializing: "Đang khởi tạo OCR...",
+    recognizing: "Đang nhận diện chữ...",
+    "recognizing text": "Đang nhận diện chữ...",
+    loading_tesseract_core: "Đang tải lõi OCR...",
+    loading_language_traineddata: "Đang tải dữ liệu tiếng Việt...",
+    initializing_api: "Đang chuẩn bị quét..."
+  };
+
+  return `${statusMap[message.status] ?? "Đang xử lý..."}${progress}`;
+}
+
+async function scanPrescriptionImage() {
+  if (!prescriptionState.file || prescriptionState.isScanning) return;
+
+  if (!window.Tesseract) {
+    setPrescriptionStatus("error", "OCR chưa sẵn sàng. Hãy kiểm tra kết nối rồi thử lại.");
+    return;
+  }
+
+  prescriptionState.isScanning = true;
+  updatePrescriptionControls();
+  setPrescriptionStatus("working", "Đang chuẩn bị quét đơn thuốc...");
+
+  try {
+    const result = await window.Tesseract.recognize(prescriptionState.file, "vie+eng", {
+      logger: (message) => {
+        setPrescriptionStatus("working", loggerMessage(message));
+      }
+    });
+
+    const rawText = result?.data?.text ?? "";
+    const cleanedText = cleanOcrText(rawText);
+
+    prescriptionState.rawText = rawText;
+    prescriptionState.extractedText = cleanedText;
+
+    if (!cleanedText) {
+      setPrescriptionStatus("error", "Chưa đọc được nội dung rõ. Hãy thử ảnh rõ hơn hoặc chụp thẳng hơn.");
+      return;
+    }
+
+    if (scenarioInput) {
+      scenarioInput.value = cleanedText;
+    }
+
+    setPrescriptionStatus("success", "Đã quét xong. Hệ thống đang phân tích tên thuốc và gợi ý an toàn.");
+    analyzeScenario({ textOverride: cleanedText, showPrescription: true });
+  } catch (_error) {
+    setPrescriptionStatus("error", "Không quét được ảnh đơn thuốc. Hãy thử ảnh sáng hơn và đủ nét.");
+  } finally {
+    prescriptionState.isScanning = false;
+    updatePrescriptionControls();
+  }
 }
 
 function buildScenarioQuickAnswer(context, result, recommendedProducts) {
@@ -1454,7 +1655,7 @@ function buildScenarioResult(context) {
   };
 }
 
-function renderScenarioResult(context, result) {
+function renderScenarioResult(context, result, options = {}) {
   if (!scenarioResult) return;
 
   const levelMeta = {
@@ -1473,6 +1674,7 @@ function renderScenarioResult(context, result) {
   };
 
   const meta = levelMeta[result.level];
+  const showPrescription = options.showPrescription ?? Boolean(prescriptionState.extractedText);
   const matchedItems = [
     ...context.medicines.map((item) => item.name),
     ...context.externalProducts.map((item) => item.name),
@@ -1493,6 +1695,17 @@ function renderScenarioResult(context, result) {
       <span>Trả lời nhanh</span>
       <p class="scenario-answer">${result.quickAnswer}</p>
     </div>
+
+    ${
+      showPrescription && prescriptionState.extractedText
+        ? `
+            <div class="scenario-result-block">
+              <span>Nội dung đơn thuốc đã quét</span>
+              <p class="scenario-answer scenario-ocr-text">${escapeHtml(prescriptionState.extractedText)}</p>
+            </div>
+          `
+        : ""
+    }
 
     <div class="scenario-result-block">
       <span>Hệ thống đã nhận diện</span>
@@ -1545,12 +1758,17 @@ function renderScenarioResult(context, result) {
   `;
 }
 
-function analyzeScenario() {
-  const text = scenarioInput?.value.trim() ?? "";
+function analyzeScenario(options = {}) {
+  const text =
+    typeof options.textOverride === "string"
+      ? options.textOverride.trim()
+      : scenarioInput?.value.trim() ?? "";
   const chosenFlags = selectedScenarioFlags();
   const context = detectScenarioContext(text, chosenFlags);
   const result = buildScenarioResult(context);
-  renderScenarioResult(context, result);
+  renderScenarioResult(context, result, {
+    showPrescription: options.showPrescription
+  });
 }
 
 function renderQuickSearches() {
@@ -1571,6 +1789,74 @@ function renderQuickSearches() {
       renderCatalog();
     });
   });
+}
+
+function mobileCategoryTarget(category) {
+  return category.id === "disease-lookup" ? "#advisor" : "#drug-finder";
+}
+
+function renderMobileHome() {
+  if (mobileTrendLinks) {
+    mobileTrendLinks.innerHTML = QUICK_SEARCHES.slice(0, 6)
+      .map(
+        (term) => `
+          <button class="mobile-trend-chip" type="button" data-mobile-term="${term}">
+            ${term}
+          </button>
+        `
+      )
+      .join("");
+
+    mobileTrendLinks.querySelectorAll("[data-mobile-term]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const term = button.dataset.mobileTerm || "";
+        state.query = term;
+        catalogSearch.value = term;
+        globalSearch.value = term;
+        renderCatalog();
+        scrollToSection("drug-finder");
+      });
+    });
+  }
+
+  if (mobilePromoGrid) {
+    mobilePromoGrid.innerHTML = INLINE_BANNERS.slice(0, 2)
+      .map(
+        (slide, index) => `
+          <a class="mobile-promo-card" href="${index === 0 ? "#drug-finder" : "#advisor"}">
+            <img src="${slide.image}" alt="${slide.title}" loading="lazy" />
+          </a>
+        `
+      )
+      .join("");
+  }
+
+  if (mobileCategoryRail) {
+    mobileCategoryRail.innerHTML = MEGA_CATEGORIES.slice(0, 9)
+      .map(
+        (category) => `
+          <button class="mobile-category-card" type="button" data-mobile-category="${category.id}">
+            <span class="mobile-category-icon material-symbols-outlined">${megaCategoryIcon(category.id)}</span>
+            <strong>${category.name}</strong>
+          </button>
+        `
+      )
+      .join("");
+
+    mobileCategoryRail.querySelectorAll("[data-mobile-category]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const categoryId = button.dataset.mobileCategory || null;
+        if (!categoryId) return;
+
+        state.selectedMegaCategoryId = categoryId;
+        renderMegaCatalog();
+
+        const category = findMegaCategoryById(categoryId);
+        const targetId = category?.id === "disease-lookup" ? "advisor" : "drug-finder";
+        scrollToSection(targetId);
+      });
+    });
+  }
 }
 
 function renderSliderSlides(trackElement, slides, ctaHref) {
@@ -2199,9 +2485,7 @@ function wireScenarioChecker() {
 
   if (scenarioClear) {
     scenarioClear.addEventListener("click", () => {
-      if (scenarioInput) {
-        scenarioInput.value = "";
-      }
+      resetPrescriptionState();
 
       (scenarioFlags?.querySelectorAll('input[type="checkbox"]') ?? []).forEach((input) => {
         input.checked = false;
@@ -2219,10 +2503,13 @@ function wireScenarioChecker() {
         {
           level: "caution",
           quickAnswer: "Hãy nhập tên thuốc, bệnh hoặc triệu chứng. Mình sẽ trả lời theo dữ liệu đang có trên trang này.",
-          reasons: ["Nhập một tình huống để hệ thống giải thích theo thông tin bạn cung cấp."],
-          safetyNotes: ["Bạn có thể bắt đầu bằng ví dụ như Panadol kết hợp Alexan hoặc tự dùng thuốc cần kê toa."],
-          nextSteps: ["Điền tên thuốc, bệnh, triệu chứng và chọn các cờ nguy cơ nếu có."],
+          reasons: ["Nhập một tình huống hoặc tải ảnh đơn thuốc để hệ thống giải thích theo dữ liệu hiện có."],
+          safetyNotes: ["Bạn có thể bắt đầu bằng ví dụ như Panadol kết hợp Alexan hoặc chụp rõ ảnh đơn thuốc để quét."],
+          nextSteps: ["Điền tên thuốc, bệnh, triệu chứng hoặc tải ảnh đơn thuốc rồi bấm phân tích."],
           recommendedProducts: []
+        },
+        {
+          showPrescription: false
         }
       );
     });
@@ -2233,6 +2520,44 @@ function wireScenarioChecker() {
       analyzeScenario();
     }
   });
+}
+
+function wirePrescriptionUploader() {
+  prescriptionImageInput?.addEventListener("change", (event) => {
+    const [file] = event.target.files ?? [];
+    setPrescriptionFile(file ?? null);
+  });
+
+  prescriptionScan?.addEventListener("click", () => {
+    scanPrescriptionImage();
+  });
+
+  prescriptionReset?.addEventListener("click", () => {
+    resetPrescriptionState();
+    renderScenarioResult(
+      {
+        medicines: [],
+        externalProducts: [],
+        diseases: [],
+        symptoms: [],
+        flags: [],
+        intents: []
+      },
+      {
+        level: "caution",
+        quickAnswer: "Hãy nhập tên thuốc, bệnh hoặc triệu chứng. Mình sẽ trả lời theo dữ liệu đang có trên trang này.",
+        reasons: ["Nhập một tình huống hoặc tải ảnh đơn thuốc để hệ thống giải thích theo dữ liệu hiện có."],
+        safetyNotes: ["Bạn có thể bắt đầu bằng ví dụ như Panadol kết hợp Alexan hoặc chụp rõ ảnh đơn thuốc để quét."],
+        nextSteps: ["Điền tên thuốc, bệnh, triệu chứng hoặc tải ảnh đơn thuốc rồi bấm phân tích."],
+        recommendedProducts: []
+      },
+      {
+        showPrescription: false
+      }
+    );
+  });
+
+  updatePrescriptionControls();
 }
 
 function revealOnScroll() {
@@ -2255,6 +2580,7 @@ function revealOnScroll() {
 function init() {
   renderMegaCatalog();
   renderQuickSearches();
+  renderMobileHome();
   renderScenarioExamples();
   renderScenarioFlags();
   renderCartSection();
@@ -2285,6 +2611,7 @@ function init() {
   wireCatalogTrigger();
   wireCustomerShortcuts();
   wireLoginForm();
+  wirePrescriptionUploader();
   wireScenarioChecker();
   animateCounters();
   revealOnScroll();

@@ -14,7 +14,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body class="sub-page cart-page">
     <div class="page-loader" id="page-loader" aria-hidden="true">
       <div class="loader">
         <div class="circle"></div>
@@ -42,6 +42,10 @@
         </div>
 
         <div class="container profile-page-nav">
+          <a class="subpage-mobile-back" href="index.html" aria-label="Quay lại trang chủ">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </a>
+
           <a class="brand" href="index.html">
             <span class="brand-mark">
               <img class="brand-logo" src="Logo/LOGO.png" alt="Nhà thuốc An Tâm" />
@@ -51,6 +55,16 @@
               <small>Chăm sóc sức khỏe mỗi ngày</small>
             </span>
           </a>
+
+          <div class="subpage-mobile-actions" aria-label="Tiện ích nhanh trên điện thoại">
+            <a class="nav-icon-button" href="cart.html" aria-label="Mở giỏ hàng">
+              <span class="material-symbols-outlined">shopping_cart</span>
+              <em class="nav-badge is-hidden" data-cart-badge>0</em>
+            </a>
+            <a class="nav-icon-button" href="profile.html" aria-label="Mở tài khoản">
+              <span class="material-symbols-outlined">account_circle</span>
+            </a>
+          </div>
 
           <nav class="profile-page-links" aria-label="Điều hướng trang giỏ hàng">
             <a href="index.html">Trang chủ</a>
@@ -112,6 +126,29 @@
           </div>
         </section>
       </main>
+
+      <nav class="mobile-bottom-nav mobile-bottom-nav-shell" aria-label="Điều hướng nhanh trên điện thoại">
+        <a class="mobile-bottom-item" href="index.html">
+          <span class="material-symbols-outlined">home</span>
+          <strong>Trang chủ</strong>
+        </a>
+        <a class="mobile-bottom-item" href="index.html#drug-finder">
+          <span class="material-symbols-outlined">apps</span>
+          <strong>Danh mục</strong>
+        </a>
+        <a class="mobile-bottom-item mobile-bottom-item-center" href="index.html#scenario-checker">
+          <span class="material-symbols-outlined">forum</span>
+          <strong>Tư vấn</strong>
+        </a>
+        <a class="mobile-bottom-item active" href="cart.html">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <strong>Đơn hàng</strong>
+        </a>
+        <a class="mobile-bottom-item" href="profile.html">
+          <span class="material-symbols-outlined">person</span>
+          <strong>Tài khoản</strong>
+        </a>
+      </nav>
 
       <div class="floating-widget" aria-label="Tiện ích nhanh">
         <button class="floating-widget-button chat" type="button" id="floating-chat-trigger" aria-label="Mở tư vấn nhanh">

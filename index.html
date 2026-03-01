@@ -14,7 +14,7 @@
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
-  <body>
+  <body class="home-page">
     <div class="page-loader" id="page-loader" aria-hidden="true">
       <div class="loader">
         <div class="circle"></div>
@@ -128,10 +128,63 @@
               </span>
             </button>
           </div>
+
+          <div class="mobile-home-promo">
+            <div class="mobile-home-hotline">
+              <div class="mobile-home-hotline-copy">
+                <span>Giao thuốc siêu tốc</span>
+                <strong>Miễn phí trong ngày</strong>
+              </div>
+              <a class="mobile-home-hotline-call" href="tel:18006821">
+                <span class="material-symbols-outlined">call</span>
+                <strong>1800 6821</strong>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="mobile-home-search-assist container">
+          <div class="mobile-home-trends" id="mobile-trend-links"></div>
+          <div class="mobile-home-shortcuts">
+            <a class="mobile-shortcut-link" href="#scenario-checker">
+              <span class="material-symbols-outlined">description</span>
+              <strong>Đặt đơn thuốc</strong>
+            </a>
+            <a class="mobile-shortcut-link" href="#advisor">
+              <span class="material-symbols-outlined">support_agent</span>
+              <strong>Liên hệ dược sĩ</strong>
+            </a>
+            <a class="mobile-shortcut-link" href="profile.html">
+              <span class="material-symbols-outlined">storefront</span>
+              <strong>Tìm nhà thuốc</strong>
+            </a>
+          </div>
         </div>
       </header>
 
       <main>
+        <section class="mobile-home-shell container reveal">
+          <div class="mobile-promo-grid" id="mobile-promo-grid"></div>
+
+          <div class="mobile-service-row">
+            <a class="mobile-service-card mobile-service-card-rose" href="#scenario-checker">
+              <span class="material-symbols-outlined">pill</span>
+              <strong>Tư vấn mua thuốc</strong>
+            </a>
+            <a class="mobile-service-card mobile-service-card-sky" href="#advisor">
+              <span class="material-symbols-outlined">support_agent</span>
+              <strong>Liên hệ dược sĩ</strong>
+            </a>
+          </div>
+
+          <div class="mobile-category-section">
+            <div class="mobile-section-head">
+              <h2>Danh mục tủ thuốc</h2>
+            </div>
+            <div class="mobile-category-rail" id="mobile-category-rail"></div>
+          </div>
+        </section>
+
         <section class="catalog-dropdown" id="catalog-stage" aria-hidden="true">
           <div class="container">
             <div class="mega-catalog glass-card">
@@ -332,6 +385,39 @@
                   placeholder="Ví dụ: Tôi tự lên đơn thuốc mà thuốc này cần kê toa. Hoặc: Tôi uống Panadol kết hợp với Alexan có được không?"
                 ></textarea>
 
+                <div class="scenario-upload-shell">
+                  <div class="scenario-upload-head">
+                    <span class="scenario-label">Hoặc tải ảnh đơn thuốc</span>
+                    <small>Quét ngay trên trình duyệt, không cần API key.</small>
+                  </div>
+
+                  <div class="scenario-upload-grid">
+                    <label class="scenario-upload-dropzone" for="prescription-image">
+                      <input id="prescription-image" type="file" accept="image/*" />
+                      <span class="material-symbols-outlined">upload_file</span>
+                      <strong>Tải ảnh đơn thuốc</strong>
+                      <small>Ảnh rõ, chụp thẳng và đủ khung giấy.</small>
+                    </label>
+
+                    <div class="scenario-upload-preview" id="prescription-preview" hidden>
+                      <img id="prescription-preview-image" alt="Xem trước đơn thuốc" />
+                    </div>
+                  </div>
+
+                  <div class="scenario-upload-actions">
+                    <button class="secondary-action" type="button" id="prescription-scan" disabled>
+                      Quét đơn thuốc
+                    </button>
+                    <button class="ghost-action" type="button" id="prescription-reset" disabled>
+                      Xóa ảnh
+                    </button>
+                  </div>
+
+                  <div class="scenario-upload-status info" id="prescription-status">
+                    Tải ảnh đơn thuốc để quét nội dung và hỗ trợ giải thích an toàn.
+                  </div>
+                </div>
+
                 <div class="scenario-flags-head">
                   <span class="scenario-label">Cờ nguy cơ của bệnh nhân</span>
                   <small>Chọn nếu tình huống có kèm các yếu tố này.</small>
@@ -364,6 +450,29 @@
         </button>
       </div>
 
+      <nav class="mobile-bottom-nav" aria-label="Điều hướng nhanh trên điện thoại">
+        <a class="mobile-bottom-item active" href="#">
+          <span class="material-symbols-outlined">home</span>
+          <strong>Trang chủ</strong>
+        </a>
+        <a class="mobile-bottom-item" href="#drug-finder">
+          <span class="material-symbols-outlined">grid_view</span>
+          <strong>Danh mục</strong>
+        </a>
+        <a class="mobile-bottom-item mobile-bottom-item-center" href="#scenario-checker">
+          <span class="material-symbols-outlined">forum</span>
+          <strong>Tư vấn</strong>
+        </a>
+        <a class="mobile-bottom-item" href="cart.html">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <strong>Đơn hàng</strong>
+        </a>
+        <a class="mobile-bottom-item" href="profile.html">
+          <span class="material-symbols-outlined">account_circle</span>
+          <strong>Tài khoản</strong>
+        </a>
+      </nav>
+
       <footer class="site-footer">
         <div class="container footer-inner">
           <div>
@@ -383,6 +492,7 @@
 
     <script src="data.js"></script>
     <script src="site-state.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

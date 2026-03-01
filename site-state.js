@@ -46,12 +46,23 @@ function safeRemoveItem(key) {
   }
 }
 
+function renderSharedChrome() {
+  const cart = normalizeCartItems(safeParseJSON(safeGetItem(APP_STORAGE_KEYS.cart), []));
+  const totalItems = cart.reduce((total, item) => total + item.quantity, 0);
+
+  document.querySelectorAll("[data-cart-badge]").forEach((badge) => {
+    badge.textContent = String(totalItems);
+    badge.classList.toggle("is-hidden", totalItems === 0);
+  });
+}
+
 window.AppStore = {
   loadCart() {
     return normalizeCartItems(safeParseJSON(safeGetItem(APP_STORAGE_KEYS.cart), []));
   },
   saveCart(cart) {
     safeSetItem(APP_STORAGE_KEYS.cart, JSON.stringify(normalizeCartItems(cart)));
+    renderSharedChrome();
   },
   loadCustomer() {
     const customer = safeParseJSON(safeGetItem(APP_STORAGE_KEYS.customer), null);
@@ -74,6 +85,7 @@ function markPageReady() {
   const loader = document.getElementById("page-loader");
 
   document.body?.classList.add("page-ready");
+  renderSharedChrome();
 
   if (!loader) return;
 
