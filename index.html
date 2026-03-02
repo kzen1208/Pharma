@@ -13,6 +13,455 @@
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0"
     />
     <link rel="stylesheet" href="styles.css" />
+    <style>
+      .pill-matcher-section {
+        padding-top: 3.4rem;
+      }
+
+      .pill-matcher-layout {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(320px, 1.05fr);
+        gap: 1.35rem;
+        align-items: start;
+      }
+
+      .pill-matcher-card {
+        padding: 1.35rem;
+      }
+
+      .pill-matcher-form {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .pill-matcher-field {
+        display: grid;
+        gap: 0.55rem;
+      }
+
+      .pill-matcher-field label {
+        font-size: 0.92rem;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      .pill-matcher-input {
+        width: 100%;
+        border: 1px solid rgba(16, 55, 152, 0.12);
+        border-radius: 1.2rem;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--text);
+      }
+
+      .pill-matcher-input {
+        min-height: 11rem;
+        padding: 1rem 1rem 1.1rem;
+        resize: vertical;
+        line-height: 1.7;
+      }
+
+      .pill-matcher-file {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .pill-matcher-source-actions {
+        display: flex;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+      }
+
+      .pill-upload-card {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 0.95rem;
+        width: 100%;
+        padding: 1rem 1rem 1rem 1.05rem;
+        border: 1px solid rgba(16, 55, 152, 0.14);
+        border-radius: 1.35rem;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(243, 247, 255, 0.92));
+        cursor: pointer;
+        transition:
+          border-color 180ms ease,
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          background 180ms ease;
+      }
+
+      .pill-upload-card:hover {
+        transform: translateY(-1px);
+        border-color: rgba(28, 84, 209, 0.26);
+        box-shadow: 0 14px 28px rgba(16, 36, 73, 0.08);
+      }
+
+      .pill-upload-card.has-file {
+        border-color: rgba(28, 84, 209, 0.34);
+        background:
+          radial-gradient(circle at top right, rgba(144, 240, 208, 0.18), transparent 24%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(236, 244, 255, 0.94));
+        box-shadow: 0 16px 32px rgba(28, 84, 209, 0.1);
+      }
+
+      .pill-upload-icon {
+        display: grid;
+        place-items: center;
+        width: 3.25rem;
+        height: 3.25rem;
+        border-radius: 1rem;
+        background: rgba(28, 84, 209, 0.1);
+        color: var(--brand);
+        font-size: 1.7rem;
+        flex-shrink: 0;
+      }
+
+      .pill-upload-copy {
+        display: grid;
+        gap: 0.18rem;
+        min-width: 0;
+      }
+
+      .pill-upload-copy strong {
+        font-size: 0.98rem;
+        line-height: 1.35;
+      }
+
+      .pill-upload-copy small {
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.45;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .pill-upload-pill {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 2.35rem;
+        padding: 0 0.95rem;
+        border-radius: 999px;
+        background: rgba(16, 55, 152, 0.08);
+        color: var(--brand-deep);
+        font-size: 0.84rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+
+      .pill-camera-shell {
+        display: none;
+        gap: 0.85rem;
+      }
+
+      .pill-camera-shell.visible {
+        display: grid;
+      }
+
+      .pill-matcher-hint {
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.55;
+      }
+
+      .pill-matcher-actions {
+        display: flex;
+        gap: 0.8rem;
+        flex-wrap: wrap;
+      }
+
+      .pill-matcher-status {
+        min-height: 1.5rem;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .pill-matcher-status.error {
+        color: var(--danger);
+      }
+
+      .pill-matcher-preview-shell {
+        display: grid;
+        gap: 1rem;
+      }
+
+      .pill-matcher-preview-empty {
+        display: grid;
+        place-items: center;
+        min-height: 18rem;
+        padding: 1rem;
+        border: 1px dashed rgba(16, 55, 152, 0.2);
+        border-radius: 1.4rem;
+        background: rgba(16, 55, 152, 0.03);
+        color: var(--muted);
+        text-align: center;
+        line-height: 1.65;
+      }
+
+      .pill-matcher-stage {
+        display: none;
+      }
+
+      .pill-matcher-stage.visible {
+        display: block;
+      }
+
+      .pill-matcher-image-wrap {
+        position: relative;
+        overflow: hidden;
+        border-radius: 1.5rem;
+        border: 1px solid rgba(16, 55, 152, 0.08);
+        background: linear-gradient(180deg, rgba(240, 245, 255, 0.96), rgba(255, 255, 255, 0.92));
+      }
+
+      .pill-camera-wrap {
+        position: relative;
+        overflow: hidden;
+        border-radius: 1.5rem;
+        border: 1px solid rgba(16, 55, 152, 0.08);
+        background: linear-gradient(180deg, rgba(8, 18, 43, 0.96), rgba(28, 84, 209, 0.28));
+      }
+
+      .pill-matcher-image-wrap img {
+        display: block;
+        width: 100%;
+        height: auto;
+      }
+
+      .pill-camera-wrap video {
+        display: block;
+        width: 100%;
+        aspect-ratio: 4 / 3;
+        object-fit: cover;
+      }
+
+      .pill-scan-beam {
+        position: absolute;
+        left: 4%;
+        right: 4%;
+        top: 18%;
+        height: 4px;
+        border-radius: 999px;
+        background: linear-gradient(90deg, rgba(56, 179, 255, 0), rgba(56, 179, 255, 0.95), rgba(56, 179, 255, 0));
+        box-shadow:
+          0 0 0 1px rgba(56, 179, 255, 0.08),
+          0 0 18px rgba(56, 179, 255, 0.38),
+          0 0 38px rgba(56, 179, 255, 0.24);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .pill-camera-wrap.is-scanning .pill-scan-beam,
+      .pill-matcher-image-wrap.is-scanning .pill-scan-beam {
+        opacity: 1;
+        animation: pillScanSweep 3.6s linear infinite;
+      }
+
+      .pill-camera-frame {
+        position: absolute;
+        inset: 12%;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        border-radius: 1.2rem;
+        box-shadow: inset 0 0 0 1px rgba(56, 179, 255, 0.2);
+        pointer-events: none;
+      }
+
+      .pill-camera-actions {
+        display: flex;
+        gap: 0.7rem;
+        flex-wrap: wrap;
+      }
+
+      .pill-camera-note {
+        color: var(--muted);
+        font-size: 0.84rem;
+        line-height: 1.55;
+      }
+
+      .pill-matcher-overlay {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .pill-matcher-meta {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 0.85rem;
+      }
+
+      .pill-matcher-meta article {
+        padding: 0.95rem 1rem;
+        border-radius: 1.15rem;
+        background: rgba(16, 55, 152, 0.04);
+      }
+
+      .pill-matcher-meta span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.8rem;
+        margin-bottom: 0.2rem;
+      }
+
+      .pill-matcher-meta strong {
+        font-size: 1.5rem;
+        color: var(--brand-deep);
+      }
+
+      .pill-matcher-table-wrap {
+        overflow-x: auto;
+      }
+
+      .pill-matcher-rule-flow {
+        display: grid;
+        gap: 0.9rem;
+      }
+
+      .pill-matcher-flow-card {
+        padding: 1rem;
+        border-radius: 1.2rem;
+        background: rgba(16, 55, 152, 0.04);
+      }
+
+      .pill-matcher-flow-card span {
+        display: block;
+        margin-bottom: 0.45rem;
+        color: var(--muted);
+        font-size: 0.78rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .pill-matcher-chip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.55rem;
+      }
+
+      .pill-matcher-chip {
+        display: inline-flex;
+        align-items: center;
+        min-height: 2rem;
+        padding: 0 0.8rem;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.94);
+        color: var(--brand-deep);
+        font-size: 0.82rem;
+        font-weight: 700;
+        border: 1px solid rgba(16, 55, 152, 0.08);
+      }
+
+      .pill-matcher-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .pill-matcher-table th,
+      .pill-matcher-table td {
+        padding: 0.9rem 0.75rem;
+        border-bottom: 1px solid rgba(16, 55, 152, 0.08);
+        text-align: left;
+        vertical-align: middle;
+      }
+
+      .pill-matcher-table th {
+        color: var(--muted);
+        font-size: 0.76rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .pill-matcher-pill-index {
+        color: var(--brand-deep);
+        font-weight: 700;
+      }
+
+      .pill-matcher-match-copy {
+        display: grid;
+        gap: 0.24rem;
+      }
+
+      .pill-matcher-match-copy small {
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .pill-matcher-verify {
+        display: inline-flex;
+        align-items: center;
+        min-height: 1.9rem;
+        padding: 0 0.7rem;
+        border-radius: 999px;
+        background: rgba(255, 176, 32, 0.18);
+        color: #a76900;
+        font-size: 0.75rem;
+        font-weight: 700;
+      }
+
+      @keyframes pillScanSweep {
+        0% {
+          opacity: 0;
+          transform: translateY(0) scaleX(0.92);
+        }
+
+        10% {
+          opacity: 1;
+        }
+
+        50% {
+          opacity: 1;
+          transform: translateY(240px) scaleX(1);
+        }
+
+        90% {
+          opacity: 1;
+        }
+
+        100% {
+          opacity: 0;
+          transform: translateY(480px) scaleX(0.92);
+        }
+      }
+
+      @media (max-width: 960px) {
+        .pill-matcher-layout {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 560px) {
+        .pill-matcher-card {
+          padding: 1rem;
+        }
+
+        .pill-upload-card {
+          grid-template-columns: auto minmax(0, 1fr);
+          padding: 0.95rem;
+        }
+
+        .pill-upload-pill {
+          grid-column: 1 / -1;
+          justify-self: start;
+        }
+
+        .pill-matcher-meta {
+          grid-template-columns: 1fr;
+        }
+
+        .pill-matcher-table th,
+        .pill-matcher-table td {
+          padding-inline: 0.45rem;
+        }
+      }
+    </style>
   </head>
   <body class="home-page">
     <div class="page-loader" id="page-loader" aria-hidden="true">
@@ -439,6 +888,138 @@
           </div>
         </section>
 
+        <section class="pill-matcher-section container reveal" id="pill-matcher">
+          <div class="section-heading">
+            <div>
+              <span class="eyebrow">Quét thuốc bằng camera</span>
+              <h2>Đối chiếu viên thuốc với toa nhập tay</h2>
+            </div>
+            <p>Chụp ảnh nhiều viên thuốc, match nhanh theo danh sách thuốc trong toa.</p>
+          </div>
+
+          <div class="pill-matcher-layout">
+            <article class="pill-matcher-card glass-card">
+              <div class="pill-matcher-form">
+                <div class="pill-matcher-field">
+                  <label for="pill-prescription-text">Prescription Text</label>
+                  <textarea
+                    class="pill-matcher-input"
+                    id="pill-prescription-text"
+                    placeholder="Paracetamol&#10;Loratadine&#10;Amoxicillin"
+                  >Paracetamol
+Loratadine
+Amoxicillin</textarea>
+                </div>
+
+                <div class="pill-matcher-field">
+                  <label for="pill-image-input">Ảnh multi-pill</label>
+                  <div class="pill-matcher-source-actions">
+                    <input
+                      class="pill-matcher-file"
+                      id="pill-image-input"
+                      type="file"
+                      accept="image/png,image/jpeg,image/jpg,image/*"
+                      capture="environment"
+                    />
+                    <label class="pill-upload-card" id="pill-upload-card" for="pill-image-input">
+                      <span class="pill-upload-icon material-symbols-outlined">upload_file</span>
+                      <span class="pill-upload-copy">
+                        <strong>Tải ảnh thuốc</strong>
+                        <small id="pill-upload-name">Chưa có tệp nào được chọn</small>
+                      </span>
+                      <span class="pill-upload-pill">Chọn tệp</span>
+                    </label>
+                    <button class="secondary-action" id="pill-camera-button" type="button">Bật camera</button>
+                  </div>
+                  <span class="pill-matcher-hint">
+                    Trên điện thoại có thể mở camera trực tiếp để chụp ảnh thuốc.
+                  </span>
+                </div>
+
+                <div class="pill-camera-shell" id="pill-camera-shell">
+                  <div class="pill-camera-wrap is-scanning" id="pill-camera-wrap">
+                    <video id="pill-camera-video" autoplay playsinline muted></video>
+                    <div class="pill-camera-frame"></div>
+                    <div class="pill-scan-beam" aria-hidden="true"></div>
+                  </div>
+                  <div class="pill-camera-actions">
+                    <button class="primary-action" id="pill-capture-button" type="button">Chụp ảnh</button>
+                    <button class="ghost-action" id="pill-camera-stop-button" type="button">Tắt camera</button>
+                  </div>
+                  <div class="pill-camera-note">Đưa nhiều viên thuốc vào giữa khung rồi bấm chụp ảnh.</div>
+                </div>
+
+                <div class="pill-matcher-actions">
+                  <button class="primary-action" id="pill-check-button" type="button">Check Pills</button>
+                  <button class="ghost-action" id="pill-clear-button" type="button">Xóa ảnh</button>
+                </div>
+
+                <div class="pill-matcher-status" id="pill-status">
+                  Chưa có yêu cầu quét nào.
+                </div>
+              </div>
+            </article>
+
+            <article class="pill-matcher-card glass-card">
+              <div class="pill-matcher-preview-shell">
+                <div class="pill-matcher-preview-empty" id="pill-preview-empty">
+                  Chọn ảnh thuốc trước, sau đó bấm <strong>Check Pills</strong> để xem bounding boxes và kết quả match.
+                </div>
+
+                <div class="pill-matcher-stage" id="pill-preview-stage">
+                  <div class="pill-matcher-image-wrap" id="pill-image-wrap">
+                    <img id="pill-preview-image" alt="Preview ảnh thuốc" />
+                    <svg class="pill-matcher-overlay" id="pill-overlay" preserveAspectRatio="none"></svg>
+                    <div class="pill-scan-beam" aria-hidden="true"></div>
+                  </div>
+                </div>
+
+                <div class="pill-matcher-meta">
+                  <article>
+                    <span>Số box</span>
+                    <strong id="pill-box-count">0</strong>
+                  </article>
+                  <article>
+                    <span>Số match</span>
+                    <strong id="pill-match-count">0</strong>
+                  </article>
+                  <article>
+                    <span>Cần verify</span>
+                    <strong id="pill-verify-count">0</strong>
+                  </article>
+                </div>
+
+                <div class="pill-matcher-rule-flow">
+                  <article class="pill-matcher-flow-card">
+                    <span>Task 2 · Pill-name extraction</span>
+                    <div class="pill-matcher-chip-row" id="pill-extracted-names">
+                      <span class="pill-matcher-chip">Chưa tách tên thuốc</span>
+                    </div>
+                  </article>
+                </div>
+
+                <div class="pill-matcher-table-wrap">
+                  <table class="pill-matcher-table">
+                    <thead>
+                      <tr>
+                        <th>Pill #</th>
+                        <th>Matched Name</th>
+                        <th>Confidence</th>
+                        <th>Verify</th>
+                      </tr>
+                    </thead>
+                    <tbody id="pill-result-body">
+                      <tr>
+                        <td colspan="4" style="text-align: center; color: var(--muted);">Chưa có kết quả.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
       </main>
 
       <div class="floating-widget" aria-label="Tiện ích nhanh">
@@ -494,5 +1075,370 @@
     <script src="site-state.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="app.js"></script>
+    <script>
+      (() => {
+        const prescriptionText = document.getElementById("pill-prescription-text");
+        const imageInput = document.getElementById("pill-image-input");
+        const uploadCard = document.getElementById("pill-upload-card");
+        const uploadName = document.getElementById("pill-upload-name");
+        const cameraButton = document.getElementById("pill-camera-button");
+        const cameraShell = document.getElementById("pill-camera-shell");
+        const cameraWrap = document.getElementById("pill-camera-wrap");
+        const cameraVideo = document.getElementById("pill-camera-video");
+        const captureButton = document.getElementById("pill-capture-button");
+        const cameraStopButton = document.getElementById("pill-camera-stop-button");
+        const checkButton = document.getElementById("pill-check-button");
+        const clearButton = document.getElementById("pill-clear-button");
+        const statusBox = document.getElementById("pill-status");
+        const previewEmpty = document.getElementById("pill-preview-empty");
+        const previewStage = document.getElementById("pill-preview-stage");
+        const imageWrap = document.getElementById("pill-image-wrap");
+        const previewImage = document.getElementById("pill-preview-image");
+        const overlay = document.getElementById("pill-overlay");
+        const resultBody = document.getElementById("pill-result-body");
+        const boxCount = document.getElementById("pill-box-count");
+        const matchCount = document.getElementById("pill-match-count");
+        const verifyCount = document.getElementById("pill-verify-count");
+        const extractedNames = document.getElementById("pill-extracted-names");
+
+        if (
+          !prescriptionText ||
+          !imageInput ||
+          !uploadCard ||
+          !uploadName ||
+          !cameraButton ||
+          !cameraShell ||
+          !cameraWrap ||
+          !cameraVideo ||
+          !captureButton ||
+          !cameraStopButton ||
+          !checkButton ||
+          !clearButton ||
+          !statusBox ||
+          !previewEmpty ||
+          !previewStage ||
+          !imageWrap ||
+          !previewImage ||
+          !overlay ||
+          !resultBody ||
+          !boxCount ||
+          !matchCount ||
+          !verifyCount ||
+          !extractedNames
+        ) {
+          return;
+        }
+
+        let selectedFile = null;
+        let previewUrl = "";
+        let cameraStream = null;
+
+        function setStatus(message, isError = false) {
+          statusBox.textContent = message;
+          statusBox.classList.toggle("error", isError);
+        }
+
+        function syncUploadCard(name = "", source = "") {
+          const hasFile = Boolean(name);
+          uploadCard.classList.toggle("has-file", hasFile);
+          uploadName.textContent = hasFile
+            ? source
+              ? `${name} • ${source}`
+              : name
+            : "Chưa có tệp nào được chọn";
+        }
+
+        function resetTable() {
+          resultBody.innerHTML = `
+            <tr>
+              <td colspan="4" style="text-align: center; color: var(--muted);">Chưa có kết quả.</td>
+            </tr>
+          `;
+          boxCount.textContent = "0";
+          matchCount.textContent = "0";
+          verifyCount.textContent = "0";
+          overlay.innerHTML = "";
+          extractedNames.innerHTML = '<span class="pill-matcher-chip">Chưa tách tên thuốc</span>';
+        }
+
+        function stopCamera() {
+          if (cameraStream) {
+            cameraStream.getTracks().forEach((track) => track.stop());
+            cameraStream = null;
+          }
+
+          cameraVideo.srcObject = null;
+          cameraShell.classList.remove("visible");
+          cameraWrap.classList.remove("is-scanning");
+          cameraButton.textContent = "Bật camera";
+        }
+
+        async function startCamera() {
+          if (!navigator.mediaDevices?.getUserMedia) {
+            setStatus("Trình duyệt này không hỗ trợ mở camera.", true);
+            return;
+          }
+
+          try {
+            stopCamera();
+            cameraStream = await navigator.mediaDevices.getUserMedia({
+              video: {
+                facingMode: { ideal: "environment" }
+              },
+              audio: false
+            });
+            cameraVideo.srcObject = cameraStream;
+            cameraShell.classList.add("visible");
+            cameraWrap.classList.add("is-scanning");
+            cameraButton.textContent = "Đang mở camera";
+            setStatus("Camera đã bật. Đặt thuốc vào khung rồi bấm chụp ảnh.");
+          } catch (error) {
+            console.error(error);
+            setStatus("Không bật được camera. Hãy cấp quyền hoặc dùng cách tải ảnh.", true);
+          }
+        }
+
+        async function captureFromCamera() {
+          if (!cameraStream) {
+            setStatus("Camera chưa bật.", true);
+            return;
+          }
+
+          const videoWidth = cameraVideo.videoWidth;
+          const videoHeight = cameraVideo.videoHeight;
+
+          if (!videoWidth || !videoHeight) {
+            setStatus("Camera chưa sẵn sàng để chụp ảnh.", true);
+            return;
+          }
+
+          const canvas = document.createElement("canvas");
+          canvas.width = videoWidth;
+          canvas.height = videoHeight;
+
+          const context = canvas.getContext("2d");
+          if (!context) {
+            setStatus("Không tạo được ảnh từ camera.", true);
+            return;
+          }
+
+          context.drawImage(cameraVideo, 0, 0, videoWidth, videoHeight);
+
+          const blob = await new Promise((resolve) => {
+            canvas.toBlob((fileBlob) => resolve(fileBlob), "image/jpeg", 0.92);
+          });
+
+          if (!blob) {
+            setStatus("Không chụp được ảnh từ camera.", true);
+            return;
+          }
+
+          selectedFile = new File([blob], `pill-camera-${Date.now()}.jpg`, { type: "image/jpeg" });
+          resetTable();
+          showPreview(selectedFile);
+          syncUploadCard(selectedFile.name, "Camera");
+          stopCamera();
+          setStatus("Đã chụp ảnh từ camera. Bấm Check Pills để quét.");
+        }
+
+        function clearPreview() {
+          if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+          }
+
+          previewUrl = "";
+          selectedFile = null;
+          imageInput.value = "";
+          previewImage.removeAttribute("src");
+          previewStage.classList.remove("visible");
+          previewEmpty.style.display = "grid";
+          imageWrap.classList.remove("is-scanning");
+          syncUploadCard();
+          stopCamera();
+          resetTable();
+          setStatus("Đã xóa ảnh đã chọn.");
+        }
+
+        function showPreview(file) {
+          if (previewUrl) {
+            URL.revokeObjectURL(previewUrl);
+          }
+
+          previewUrl = URL.createObjectURL(file);
+          previewImage.src = previewUrl;
+          previewStage.classList.add("visible");
+          previewEmpty.style.display = "none";
+        }
+
+        function escapeHtml(text) {
+          return String(text).replace(/[&<>"']/g, (char) => {
+            const map = {
+              "&": "&amp;",
+              "<": "&lt;",
+              ">": "&gt;",
+              '"': "&quot;",
+              "'": "&#39;"
+            };
+            return map[char] || char;
+          });
+        }
+
+        function renderOverlay(detections, matchesById) {
+          const imageWidth = previewImage.naturalWidth || 1;
+          const imageHeight = previewImage.naturalHeight || 1;
+          overlay.setAttribute("viewBox", `0 0 ${imageWidth} ${imageHeight}`);
+
+          overlay.innerHTML = detections
+            .map((item, index) => {
+              const [x1, y1, x2, y2] = item.box;
+              const width = Math.max(1, x2 - x1);
+              const height = Math.max(1, y2 - y1);
+              const match = matchesById.get(item.crop_id);
+              const label = escapeHtml(match?.detected_label || `Pill ${index + 1}`);
+
+              return `
+                <g>
+                  <rect
+                    x="${x1}"
+                    y="${y1}"
+                    width="${width}"
+                    height="${height}"
+                    rx="18"
+                    fill="rgba(28, 84, 209, 0.14)"
+                    stroke="#1c54d1"
+                    stroke-width="4"
+                  />
+                  <text
+                    x="${x1 + 12}"
+                    y="${Math.max(24, y1 + 28)}"
+                    fill="#103798"
+                    font-size="22"
+                    font-weight="700"
+                  >
+                    ${label}
+                  </text>
+                </g>
+              `;
+            })
+            .join("");
+        }
+
+        function renderRows(matches) {
+          if (!matches.length) {
+            resultBody.innerHTML = `
+              <tr>
+                <td colspan="4" style="text-align: center; color: var(--muted);">Không có match nào.</td>
+              </tr>
+            `;
+            return;
+          }
+
+          resultBody.innerHTML = matches
+            .map((item, index) => {
+              const confidence = Number(item.confidence || 0);
+              const needVerify = confidence < 0.6;
+
+              return `
+                <tr>
+                  <td><span class="pill-matcher-pill-index">Pill ${index + 1}</span></td>
+                  <td>
+                    <div class="pill-matcher-match-copy">
+                      <strong>${escapeHtml(item.matched_name || "")}</strong>
+                      <small>Visual label: ${escapeHtml(item.detected_label || "")}</small>
+                    </div>
+                  </td>
+                  <td>${confidence.toFixed(2)}</td>
+                  <td>${needVerify ? '<span class="pill-matcher-verify">Need verify</span>' : ""}</td>
+                </tr>
+              `;
+            })
+            .join("");
+        }
+
+        function renderPayload(payload) {
+          const detections = Array.isArray(payload.detections) ? payload.detections : [];
+          const matches = Array.isArray(payload.matches) ? payload.matches : [];
+          const names = Array.isArray(payload.extracted_names) ? payload.extracted_names : [];
+          const needVerify = matches.filter((item) => Number(item.confidence || 0) < 0.6).length;
+          const matchesById = new Map(matches.map((item) => [item.crop_id, item]));
+
+          renderOverlay(detections, matchesById);
+          renderRows(matches);
+          boxCount.textContent = String(detections.length);
+          matchCount.textContent = String(matches.length);
+          verifyCount.textContent = String(needVerify);
+          extractedNames.innerHTML = names.length
+            ? names.map((name) => `<span class="pill-matcher-chip">${escapeHtml(name)}</span>`).join("")
+            : '<span class="pill-matcher-chip">Không có tên thuốc</span>';
+        }
+
+        imageInput.addEventListener("change", (event) => {
+          const file = event.target.files?.[0];
+          resetTable();
+
+          if (!file) {
+            selectedFile = null;
+            previewStage.classList.remove("visible");
+            previewEmpty.style.display = "grid";
+            setStatus("Chưa có ảnh nào được chọn.");
+            return;
+          }
+
+          selectedFile = file;
+          showPreview(file);
+          syncUploadCard(file.name, "Upload");
+          stopCamera();
+          setStatus(`Đã chọn ảnh: ${file.name}`);
+        });
+
+        cameraButton.addEventListener("click", startCamera);
+        captureButton.addEventListener("click", captureFromCamera);
+        cameraStopButton.addEventListener("click", () => {
+          stopCamera();
+          setStatus("Đã tắt camera.");
+        });
+        clearButton.addEventListener("click", clearPreview);
+
+        checkButton.addEventListener("click", async () => {
+          if (!selectedFile) {
+            setStatus("Vui lòng chọn ảnh thuốc trước.", true);
+            return;
+          }
+
+          const formData = new FormData();
+          formData.append("image", selectedFile);
+          formData.append("prescription_text", prescriptionText.value || "");
+
+          checkButton.disabled = true;
+          imageWrap.classList.add("is-scanning");
+          setStatus("Đang chạy theo luồng: detection -> extraction -> matching by rule...");
+
+          try {
+            const response = await fetch("/infer", {
+              method: "POST",
+              body: formData
+            });
+
+            if (!response.ok) {
+              const errorText = await response.text();
+              throw new Error(errorText || "Không gọi được API");
+            }
+
+            const payload = await response.json();
+            await previewImage.decode().catch(() => {});
+            renderPayload(payload);
+            setStatus("Đã quét xong. Box hiển thị visual label, rồi match với tên thuốc tách từ toa.");
+          } catch (error) {
+            console.error(error);
+            setStatus("Không gọi được API /infer. Kiểm tra FastAPI đã chạy chưa.", true);
+          } finally {
+            checkButton.disabled = false;
+            imageWrap.classList.remove("is-scanning");
+          }
+        });
+
+        window.addEventListener("beforeunload", stopCamera);
+      })();
+    </script>
   </body>
 </html>
